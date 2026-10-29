@@ -1,0 +1,10 @@
+fecha: 2026-12-08
+tipo: tip
+num: ""
+titulo: Tus mails llegan a spam?
+texto: "Puede ser que a tu dominio le falten SPF, DKIM y DMARC. Son tres registros que les dicen a los demás servidores que tus mails son tuyos."
+alt_text: "Placa de fondo oscuro con el título: tus mails llegan a spam? Texto: puede que a tu dominio le falten los registros SPF, DKIM y DMARC, que les confirman a los demás servidores que los mails son tuyos."
+caption: |
+  Si tus clientes te dicen que tus mails les caen en spam, lo primero que hay que mirar es la configuración del dominio.
+
+  SPF, DKIM y DMARC son tres registros que se cargan una vez y ayudan a que tus correos lleguen a la bandeja de entrada.

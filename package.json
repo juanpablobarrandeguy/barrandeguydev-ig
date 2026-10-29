@@ -1,0 +1,13 @@
+{
+  "name": "barrandeguydev-ig",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "render": "node scripts/render.mjs"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0",
+    "mustache": "^4.2.0",
+    "playwright": "^1.50.0"
+  }
+}

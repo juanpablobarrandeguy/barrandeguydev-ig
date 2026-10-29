@@ -1,0 +1,13 @@
+fecha: 2026-12-15
+tipo: caso
+titulo: Canillita
+que: "Resumen de noticias diario: lee unas 25 fuentes, una IA elige y resume lo importante, y llega por mail cada mañana."
+resultado: "Sin costo de infraestructura."
+url: github.com/juanpablobarrandeguy/newsdigest
+cta: Proyecto propio
+alt_text: "Placa de fondo oscuro con el título Canillita. Texto: resumen de noticias diario que lee unas 25 fuentes; una IA elige y resume lo importante y llega por mail cada mañana. Sin costo de infraestructura."
+caption: |
+  Canillita es un proyecto propio: todas las mañanas lee unas 25 fuentes, una IA elige lo importante, lo resume y me lo manda por mail.
+
+  Corre solo y sin costo de infraestructura. El código está en github.com/juanpablobarrandeguy/newsdigest
+url_chica: true
