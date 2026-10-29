@@ -1,0 +1,48 @@
+# Renderiza los posts a public/*.jpg y los commitea.
+# Cloudflare Pages (conectado al repo) publica public/ en cada push.
+name: render
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "posts/**"
+      - "templates/**"
+      - "fonts/**"
+      - "scripts/render.mjs"
+      - "package-lock.json"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: render
+  cancel-in-progress: false
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run render
+
+      - name: Commit de las imágenes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public
+          if git diff --cached --quiet; then
+            echo "Sin cambios en las imágenes"
+          else
+            git commit -m "render: actualizar imágenes"
+            git push
+          fi

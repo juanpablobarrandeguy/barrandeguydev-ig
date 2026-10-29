@@ -1,11 +1,12 @@
-// Renderiza cada posts/*.yaml a out/<nombre>.jpg (1080x1350, JPEG)
+// Renderiza cada posts/*.yaml a public/<nombre>.jpg (1080x1350, JPEG)
 const pw = (await import(process.env.PW_PATH || 'playwright')).default;
 import Mustache from 'mustache';
 import * as yaml from 'js-yaml';
-import { readFileSync, readdirSync, writeFileSync } from 'fs';
+import { readFileSync, readdirSync, mkdirSync, rmSync } from 'fs';
 import { join, basename } from 'path';
+import { fileURLToPath } from 'url';
 
-const root = new URL('..', import.meta.url).pathname;
+const root = fileURLToPath(new URL('..', import.meta.url));
 const font = (f) => readFileSync(join(root, 'fonts', f)).toString('base64');
 const fonts = `
 @font-face{font-family:'Plex Sans';font-weight:400;src:url(data:font/woff2;base64,${font('ibm-plex-sans-latin-400-normal.woff2')})}
@@ -14,6 +15,10 @@ const fonts = `
 const css = readFileSync(join(root, 'templates/base.css'), 'utf8');
 
 const only = process.argv[2];
+const outDir = join(root, 'public');
+mkdirSync(outDir, { recursive: true });
+// render completo: se borran las imágenes viejas para que no queden posts eliminados
+if (!only) for (const f of readdirSync(outDir)) if (f.endsWith('.jpg')) rmSync(join(outDir, f));
 const files = readdirSync(join(root, 'posts')).filter(f => f.endsWith('.yaml') && (!only || f.includes(only)));
 const browser = await pw.chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1080, height: 1350 } });
@@ -23,7 +28,7 @@ for (const f of files) {
   const html = `<!doctype html><html lang="es"><head><meta charset="utf-8"><style>${fonts}${css}</style></head><body>${Mustache.render(tpl, data)}</body></html>`;
   await page.setContent(html);
   await page.evaluate(() => document.fonts.ready);
-  const out = join(root, 'out', basename(f, '.yaml') + '.jpg');
+  const out = join(outDir, basename(f, '.yaml') + '.jpg');
   await page.screenshot({ path: out, type: 'jpeg', quality: 92 });
   console.log('→', out);
 }
